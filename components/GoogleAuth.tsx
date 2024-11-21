@@ -1,9 +1,9 @@
-import React from "react";
 import { SafeAreaView, StyleSheet } from "react-native";
 import {
   GoogleSignin,
   GoogleSigninButton,
 } from "@react-native-google-signin/google-signin";
+import { useAuthStore } from "../stores/authStore";
 
 GoogleSignin.configure({
   offlineAccess: true,
@@ -15,14 +15,24 @@ GoogleSignin.configure({
 });
 
 const GoogleAuth = () => {
+  const login = useAuthStore((state) => state.login); // Extrae la función login del store
+
   const testGoogleLoginFunctionality = async () => {
     try {
       await GoogleSignin.hasPlayServices();
 
       // log in using Google account (on Android it will only work if google play services are installed)
       const userInfo = await GoogleSignin.signIn();
-      console.log(userInfo);
-
+      if (userInfo.data) {
+        console.log(userInfo.data.user);
+        login({
+          id: userInfo.data.user.id,
+          name: userInfo.data.user.name || "Usuario",
+          email: userInfo.data.user.email || "",
+          photo: userInfo.data.user.photo || "",
+        });
+        return;
+      }
       // try to sign in silently (this should be done when the user is already signed-in)
       /*
         const userInfo2 = await GoogleSignin.signInSilently();

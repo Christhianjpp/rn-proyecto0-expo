@@ -1,13 +1,21 @@
 import React from "react";
 import { Text, View } from "react-native";
-import { Screen } from "../components/Screen";
+import Screen from "../components/Screen";
+import { useAuthStore } from "../stores/authStore";
+import GoogleAuth from "../components/GoogleAuth";
 
-export const HomeScreen = () => {
+const HomeScreen = () => {
+  const { isAuthenticated, user, login, logout } = useAuthStore();
+
   return (
     <Screen>
       <View>
         <Text>HomeScreen!!</Text>
+        <Text>Bienvenido, {user?.name}!</Text>
       </View>
+      <GoogleAuth />
     </Screen>
   );
 };
+
+export default HomeScreen;

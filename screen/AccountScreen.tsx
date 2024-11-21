@@ -1,8 +1,8 @@
 import React from "react";
 import { Text, View } from "react-native";
-import { Screen } from "../components/Screen";
+import Screen from "../components/Screen";
 
-export const AccountScreen = () => {
+const AccountScreen = () => {
   return (
     <Screen>
       <View>
@@ -11,3 +11,5 @@ export const AccountScreen = () => {
     </Screen>
   );
 };
+
+export default AccountScreen;

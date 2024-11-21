@@ -5,7 +5,7 @@ interface ScreenProps {
   children: ReactNode;
 }
 
-export function Screen({ children }: ScreenProps): JSX.Element {
+export default function Screen({ children }: ScreenProps): JSX.Element {
   return <View style={style.counter}>{children}</View>;
 }
 
