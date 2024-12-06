@@ -1,20 +1,21 @@
-import React from "react";
 import { Text, View } from "react-native";
-import Screen from "../components/Screen";
 import { useAuthStore } from "../stores/authStore";
-import GoogleAuth from "../components/GoogleAuth";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const HomeScreen = () => {
-  const { isAuthenticated, user, login, logout } = useAuthStore();
+  const { isAuthenticated, user, login, logout, token } = useAuthStore();
+  const insets = useSafeAreaInsets();
 
   return (
-    <Screen>
-      <View>
-        <Text>HomeScreen!!</Text>
-        <Text>Bienvenido, {user?.name}!</Text>
-      </View>
-      <GoogleAuth />
-    </Screen>
+    <View
+      style={{
+        paddingTop: insets.top,
+        paddingBottom: insets.bottom,
+        paddingLeft: insets.left,
+      }}
+    >
+      <Text>Bienvenido!!</Text>
+    </View>
   );
 };
 

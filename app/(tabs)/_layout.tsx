@@ -1,8 +1,15 @@
-import { Tabs } from "expo-router";
+import { Redirect, Tabs } from "expo-router";
 import { ImageBackground, View } from "react-native";
-import { InfoIcon, HomeIcon } from "../../components/Icons";
+import { HomeIcon, InfoIcon, UserIcon } from "../../components/Icons";
+import { useAuthStore } from "../../stores/authStore";
 
 export default function Layout({}) {
+  const { isAuthenticated } = useAuthStore();
+
+  if (!isAuthenticated) {
+    return <Redirect href="/sign-in" />;
+  }
+
   return (
     <Tabs
       screenOptions={{
@@ -22,10 +29,10 @@ export default function Layout({}) {
       />
 
       <Tabs.Screen
-        name="account"
+        name="yo"
         options={{
           title: "Yo",
-          tabBarIcon: ({ color }) => <InfoIcon color={color} />,
+          tabBarIcon: ({ color }) => <UserIcon color={color} />,
         }}
       />
     </Tabs>
