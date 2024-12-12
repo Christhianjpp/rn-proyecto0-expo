@@ -34,6 +34,9 @@ interface AuthState {
   sendPassword: (password: string) => void;
   msgError: string;
   setMsgError: (message: string) => void; // Define el setter
+  updateUser: (name: string, img: string | undefined) => void;
+  setLoadingTrue: () => void;
+  setLoadingfalse: () => void;
 }
 
 export const useAuthStore = create<AuthState>((set, get) => ({
@@ -46,7 +49,12 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   tokenRecovery: null,
   msgError: "",
   setMsgError: (message) => set({ msgError: message }),
-
+  setLoadingTrue: () => {
+    set({ isLoading: true });
+  },
+  setLoadingfalse: () => {
+    set({ isLoading: false });
+  },
   login: async (user, token) => {
     try {
       set({ isLoading: true });
@@ -132,6 +140,24 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       throw new Error(
         "No se pudo crear el usuario. Por favor, inténtalo de nuevo."
       );
+    } finally {
+      set({ isLoading: false });
+    }
+  },
+  updateUser: async (name: string, img: string | undefined) => {
+    try {
+      set({ isLoading: true });
+      const id = get().user?.uid;
+      console.log({ id });
+
+      const { data } = await proyectoApi.put(`/users/${id}`, {
+        name,
+        img,
+      });
+
+      set({ user: data.user });
+    } catch (error: any) {
+      set({ msgError: error.response.data.msg });
     } finally {
       set({ isLoading: false });
     }

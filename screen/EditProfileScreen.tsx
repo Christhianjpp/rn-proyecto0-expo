@@ -1,14 +1,40 @@
 import UpdateImage from "components/edit/UpdateImage";
-import { useRouter } from "expo-router";
-import React, { useState } from "react";
-import { StyleSheet, View, TouchableOpacity } from "react-native";
+
+import React, { useEffect, useState } from "react";
+import { StyleSheet, View, TouchableOpacity, Button } from "react-native";
 import { useAuthStore } from "stores/authStore";
 import { Ionicons } from "@expo/vector-icons";
+import MenuModal from "components/edit/MenuModal";
+import { ImagePickerAsset } from "expo-image-picker";
+import EditProfile from "components/edit/EditProfile";
 
-const EditProfileScreen = () => {
+interface Promp {
+  nameUser: string;
+  setNameUser: (name: string) => void;
+  imgforUpload: ImagePickerAsset | undefined;
+  setImgforUpload: (img: ImagePickerAsset) => void;
+}
+const EditProfileScreen = ({
+  nameUser,
+  setNameUser,
+  imgforUpload,
+  setImgforUpload,
+}: Promp) => {
   const user = useAuthStore((state) => state.user);
   const [imgUser, setImgUser] = useState(user?.img);
-  const router = useRouter();
+  const [modalVisible, setModalVisible] = useState(false);
+  const [namechange, setNamechange] = useState<string>();
+  useEffect(() => {
+    if (namechange) {
+      setNameUser(namechange);
+    }
+  }, [namechange]);
+
+  useEffect(() => {
+    if (imgforUpload) {
+      setImgUser(imgforUpload.uri);
+    }
+  }, [imgforUpload]);
 
   return (
     <View style={styles.container}>
@@ -19,11 +45,18 @@ const EditProfileScreen = () => {
         {/* Botón montado debajo de la imagen */}
         <TouchableOpacity
           style={styles.button}
-          onPress={() => router.push("menu-modal")}
+          onPress={() => setModalVisible(true)}
         >
           <Ionicons name="camera-outline" size={25} color="black" />
         </TouchableOpacity>
       </View>
+      <EditProfile nameData={nameUser} setNameUser={setNamechange} />
+
+      <MenuModal
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+        setImgUser={setImgforUpload}
+      />
     </View>
   );
 };

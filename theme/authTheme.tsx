@@ -115,7 +115,7 @@ export const stylesForm = StyleSheet.create({
     fontWeight: "500",
   },
   form: {
-    gap: 16,
+    gap: 8,
   },
   input: {
     borderBottomWidth: 1,
@@ -167,7 +167,7 @@ export const stylesForm = StyleSheet.create({
   errorText: {
     color: "red",
     fontSize: 12,
-    marginTop: 4,
+    marginTop: 0,
   },
   forgotPassword: {
     color: "#2196F3",
